@@ -62,3 +62,38 @@ length(sentence_words[[4]])
 # we can calculate the length of each sentence in the paragraph with 
 # a single line of code:
 sapply(sentence_words, length)
+
+# Issue 3 section: Exploratory Analysis
+# First, build the URL of the text file 
+base_url <- "https://programminghistorian.org/assets/basic-text-processing-in-r"
+url <- sprintf("%s/sotu_text/236.txt", base_url)
+text <- paste(readLines(url), collapse = "\n")
+
+# Tokenize the text and obtain word count for the document: 6113 words
+words <- tokenize_words(text)
+length(words[[1]])
+
+# reuse Tidy code from above
+tab <- table(words[[1]])
+# The following generates a warning:
+# Warning message:
+#  `data_frame()` was deprecated in tibble 1.1.0.
+# Please use `tibble()` instead--but I can't get tibble() to work
+tab <- data_frame(word = names(tab), count = as.numeric(tab))
+tab <- arrange(tab, desc(count))
+# Do this in console: > tab
+
+# need to obtain word frequency occurence data for the English language
+# Use the Norvig/Google Web Trillion Word Corpus (TWC)
+# First column give language as “en” -- English 
+# Second column gives the word 
+# third column gives percentage of TWC consisting of the given word. 
+wf <- read_csv(sprintf("%s/%s", base_url, "word_frequency.csv"))
+# Do this in console: > wf
+
+# function to join on common column names, here: "word"
+tab <- inner_join(tab, wf)
+# Do this in console: > tab
+# filter for rows that occur with a frequency less than 0.1%: 1 in a 1000 words.
+filter(tab, frequency < 0.1)
+print(filter(tab, frequency < 0.002), n = 15)
