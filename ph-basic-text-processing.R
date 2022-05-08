@@ -27,4 +27,16 @@ text <- paste("Now, I understand that because it's an election season",
               "and heroin abuse. So, who knows, we might surprise the",
               "cynics again")
 
+# the function tokenize_words returns a list object with one entry per document 
+# in the input. this explains the funky output from running "> words" [[1]]
+# > length(words[[1]]) would yield [1] 89 -- or 89 words in the snippet
 words <- tokenize_words(text)
+
+# put the unique words in a Tidy table and get the frequency of occurences
+tab <- table(words[[1]])
+tab <- data_frame(word = names(tab), count = as.numeric(tab))
+
+# put the table into descending order
+arrange(tab, desc(count))
+
+# Do this in console: > tab
