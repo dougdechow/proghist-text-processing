@@ -16,6 +16,7 @@ install.packages("tokenizers")
 library(tidyverse)
 library(tokenizers)
 
+# ISSUE 1 section: Tokenization
 text <- paste("Now, I understand that because it's an election season",
               "expectations for what we will achieve this year are low.",
               "But, Mister Speaker, I appreciate the constructive approach",
@@ -40,3 +41,24 @@ tab <- data_frame(word = names(tab), count = as.numeric(tab))
 arrange(tab, desc(count))
 
 # Do this in console: > tab
+
+# ISSUE 2 section: Detecting Sentence Boundaries
+sentences <- tokenize_sentences(text)
+# Do this in console: > sentences
+
+sentence_words <- tokenize_words(sentences[[1]])
+# Do this in console: > sentence_words
+
+length(sentence_words)
+# Direct access makes it possible to figure out how many words are in 
+# each sentence of the paragraph:
+length(sentence_words[[1]])
+length(sentence_words[[2]])
+length(sentence_words[[3]])
+length(sentence_words[[4]])
+
+# Cumbersome. There's an easier way. The sapply function applies its 
+# second argument to every element of its first argument. As a result, 
+# we can calculate the length of each sentence in the paragraph with 
+# a single line of code:
+sapply(sentence_words, length)
