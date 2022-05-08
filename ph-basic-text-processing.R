@@ -97,3 +97,12 @@ tab <- inner_join(tab, wf)
 # filter for rows that occur with a frequency less than 0.1%: 1 in a 1000 words.
 filter(tab, frequency < 0.1)
 print(filter(tab, frequency < 0.002), n = 15)
+
+# Issue #4: Document Summarization section
+metadata <- read_csv(sprintf("%s/%s", base_url, "metadata.csv"))
+# Do this in console: metadata
+
+# extract the top five most used words with frequency less than 0.002%
+tab <- filter(tab, frequency < 0.002)
+result <- c(metadata$president[236], metadata$year[236], tab$word[1:5])
+paste(result, collapse = "; ")
