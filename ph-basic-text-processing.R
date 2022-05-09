@@ -106,3 +106,16 @@ metadata <- read_csv(sprintf("%s/%s", base_url, "metadata.csv"))
 tab <- filter(tab, frequency < 0.002)
 result <- c(metadata$president[236], metadata$year[236], tab$word[1:5])
 paste(result, collapse = "; ")
+
+# Issue #5: Analyzing SOTU Addresses (1790-2016)
+# Load the Corpus
+files <- sprintf("%s/sotu_text/%03d.txt", base_url, 1:236)
+text <- c()
+for (f in files) {
+  text <- c(text, paste(readLines(f), collapse = "\n"))
+}
+
+# Exploratory analysis with a plot
+words <- tokenize_words(text)
+sapply(words, length)
+qplot(metadata$year, sapply(words, length))
